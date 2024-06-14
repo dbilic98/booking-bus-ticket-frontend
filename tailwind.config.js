@@ -1,9 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    fontFamily: {
+      "major-mono": ["Major Mono Display", "monospace"],
+    },
+    extend: {
+      colors: {
+        "light-gray": "#E0E1DD",
+      },
+    },
   },
   plugins: [],
-}
-
+};
