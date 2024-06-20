@@ -6,7 +6,7 @@ const Header: React.FC = () => {
       <h1 className="text-xl font-bold pl-8">BMS</h1>
 
       <nav className="flex-1 ml-[20%] flex space-x-20">
-        <a href="#" className="hover:underline">
+        <a href="/" className="hover:underline">
           HOME
         </a>
         <a href="#" className="hover:underline">
