@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CounterForm from "../components/CounterForm";
 import DateRangePicker from "../components/DateRangePicker";
+import PlacesSearch from "../components/PlacesSearch";
 
 const SearchForm: React.FC<{
   currentDate: string;
@@ -16,16 +17,7 @@ const SearchForm: React.FC<{
     <div className="bg-cream p-10 shadow-lg rounded-md w-full max-w-md">
       <form className="space-y-6">
         <div className="flex space-x-4">
-          <input
-            type="text"
-            placeholder="FROM"
-            className="w-full p-3 border rounded"
-          />
-          <input
-            type="text"
-            placeholder="TO"
-            className="w-full p-3 border rounded"
-          />
+          <PlacesSearch />
         </div>
         <div className="w-full p-3 border rounded">
           <DateRangePicker />
