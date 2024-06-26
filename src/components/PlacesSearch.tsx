@@ -66,7 +66,7 @@ const PlacesSearch: React.FC = () => {
             {suggestions.from.map((place, index) => (
               <li
                 key={place.id}
-                className={`p-2 hover:bg-gray-200 cursor-pointer ${
+                className={`p-2 hover:bg-gray-200 cursor-pointer${
                   index === 0 && place.placeName.startsWith(from)
                     ? "text-gray-700"
                     : "text-gray-400"
@@ -80,7 +80,7 @@ const PlacesSearch: React.FC = () => {
         )}
       </div>
       <div className="flex justify-center items-center">
-        <GoArrowSwitch className="text-2xl text-jet-black-500" />
+        <GoArrowSwitch className="text-1xl text-jet-black-500" />
       </div>
       <div className="relative w-full">
         <input
