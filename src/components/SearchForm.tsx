@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CounterForm from "../components/CounterForm";
+import PassengerForm from "./PassengerForm";
 import DateRangePickerRoundtrip from "../components/DateRangePickerRoundtrip";
 import DateRangePickerOneWayRoute from "./DateRangePickerOneWay";
 import PlacesSearch from "../components/PlacesSearch";
@@ -8,11 +8,11 @@ const SearchForm: React.FC<{
   currentDate: string;
   setCurrentDate: (date: string) => void;
 }> = ({ currentDate, setCurrentDate }) => {
-  const [showCounterForm, setShowCounterForm] = useState(false);
+  const [showPassengerForm, setShowPassengerForm] = useState(false);
   const [tripType, setTripType] = useState("roundtrip");
 
   const toggleCounterForm = () => {
-    setShowCounterForm(!showCounterForm);
+    setShowPassengerForm(!showPassengerForm);
   };
 
   return (
@@ -82,9 +82,9 @@ const SearchForm: React.FC<{
           >
             PASSENGER
           </button>
-          {showCounterForm && (
+          {showPassengerForm && (
             <div className="mt-1">
-              <CounterForm />
+              <PassengerForm />
             </div>
           )}
         </div>
