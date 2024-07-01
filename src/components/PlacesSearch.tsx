@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { fetchPlaces } from "../features/placeSlice";
 import { AppDispatch } from "../redux/store";
 import { GoArrowSwitch } from "react-icons/go";
+import "../index.css";
 
 const PlacesSearch: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -62,11 +63,11 @@ const PlacesSearch: React.FC = () => {
           className="w-full p-3 border rounded"
         />
         {from && suggestions.from.length > 0 && (
-          <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+          <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto custom-scrollbar">
             {suggestions.from.map((place, index) => (
               <li
                 key={place.id}
-                className={`p-2 hover:bg-gray-200 cursor-pointer${
+                className={`p-2 border-gray-100 hover:bg-gray-200 cursor-pointer ${
                   index === 0 && place.placeName.startsWith(from)
                     ? "text-gray-700"
                     : "text-gray-400"
@@ -91,7 +92,7 @@ const PlacesSearch: React.FC = () => {
           className="w-full p-3 border rounded"
         />
         {to && suggestions.to.length > 0 && (
-          <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+          <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto custom-scrollbar">
             {suggestions.to.map((place, index) => (
               <li
                 key={place.id}
