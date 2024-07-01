@@ -5,6 +5,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/*DATE*/
 .react-datepicker__day--selected,
 .react-datepicker__day--keyboard-selected {
   background-color: #d1e2c4 !important;
@@ -14,4 +15,17 @@
 .react-datepicker__day--selected:hover,
 .react-datepicker__day--keyboard-selected:hover {
   background-color: #c1d6b1 !important;
+}
+/*FROM and TO*/
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #d1e2c4;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
 }
