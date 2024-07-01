@@ -9,8 +9,8 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="flex-grow flex bg-yellow">
-        <div className="bg-yellow w-1/2 p-8 flex flex-col justify-center items-start space-y-8">
+      <div className="flex-grow flex bg-light-green">
+        <div className="bg-light-green w-1/2 p-8 flex flex-col justify-center items-start space-y-8">
           <div className="font-mono">
             <h1 className="text-5xl font-bold pl-8">BUS</h1>
             <h1 className="text-5xl font-bold pl-8">MANAGEMENT</h1>
