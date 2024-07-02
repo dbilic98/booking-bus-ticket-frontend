@@ -1,19 +1,19 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
-import { increment, decrement } from "../features/counterSlice";
+import { increment, decrement } from "../features/passengerSlice";
 
-const CounterForm: React.FC = () => {
+const PassengerForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { child, adult, student } = useSelector(
-    (state: RootState) => state.counter
+    (state: RootState) => state.passenger
   );
 
-  const handleIncrement = (field: keyof RootState["counter"]) => {
+  const handleIncrement = (field: keyof RootState["passenger"]) => {
     dispatch(increment(field));
   };
 
-  const handleDecrement = (field: keyof RootState["counter"]) => {
+  const handleDecrement = (field: keyof RootState["passenger"]) => {
     dispatch(decrement(field));
   };
 
@@ -121,4 +121,4 @@ const CounterField: React.FC<CounterFieldProps> = ({
   );
 };
 
-export default CounterForm;
+export default PassengerForm;

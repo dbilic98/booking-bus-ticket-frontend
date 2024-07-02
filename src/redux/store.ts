@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "../features/counterSlice";
+import passengerReducer from "../features/passengerSlice";
 import dateRangeSlice from "../features/dateRangeSlice";
 import placesSlice from "../features/placeSlice";
 
 const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    passenger: passengerReducer,
     dateRang: dateRangeSlice,
     places: placesSlice,
   },

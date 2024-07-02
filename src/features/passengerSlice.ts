@@ -1,18 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface CounterState {
+interface PassengerSlice {
   child: number;
   adult: number;
   student: number;
 }
 
-const initialState: CounterState = {
+const initialState: PassengerSlice = {
   child: 0,
   adult: 0,
   student: 0,
 };
 
-const counterSlice = createSlice({
+const passengerSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
@@ -33,5 +33,5 @@ const counterSlice = createSlice({
   },
 });
 
-export const { increment, decrement } = counterSlice.actions;
-export default counterSlice.reducer;
+export const { increment, decrement } = passengerSlice.actions;
+export default passengerSlice.reducer;
