@@ -8,14 +8,14 @@ export const fetchPlaces = createAsyncThunk(
       const response = await axios.get(
         `http://localhost:8081/places/search?prefix=${prefix}`
       );
-      return response.data;
+      return response.data as Place[];
     } catch (error) {
       throw error;
     }
   }
 );
 
-interface Place {
+export interface Place {
   id: number;
   placeName: string;
 }

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchPlaces } from "../features/placeSlice";
 import { AppDispatch } from "../redux/store";
 import { GoArrowSwitch } from "react-icons/go";
+import { Place } from "../features/placeSlice";
 import "../index.css";
 
 const PlacesSearch: React.FC = () => {
@@ -13,7 +14,7 @@ const PlacesSearch: React.FC = () => {
   const [selectedFrom, setSelectedFrom] = useState("");
   const [selectedTo, setSelectedTo] = useState("");
 
-  const [suggestions, setSuggestions] = useState<{ [key: string]: any[] }>({
+  const [suggestions, setSuggestions] = useState<{ [key: string]: Place[] }>({
     from: [],
     to: [],
   });
@@ -32,7 +33,7 @@ const PlacesSearch: React.FC = () => {
       if (fetchPlaces.fulfilled.match(action)) {
         setSuggestions((prev) => ({
           ...prev,
-          [field]: action.payload,
+          [field]: action.payload as Place[],
         }));
       }
     });
@@ -62,23 +63,31 @@ const PlacesSearch: React.FC = () => {
           onChange={(e) => handleInputChange(e, "from")}
           className="w-full p-3 border rounded"
         />
-        {from && suggestions.from.length > 0 && (
-          <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto custom-scrollbar">
-            {suggestions.from.map((place, index) => (
-              <li
-                key={place.id}
-                className={`p-2 border-gray-100 hover:bg-gray-200 cursor-pointer ${
-                  index === 0 && place.placeName.startsWith(from)
-                    ? "text-gray-700"
-                    : "text-gray-400"
-                }`}
-                onClick={() => handleSuggestionClick(place, "from")}
-              >
-                {place.placeName}
-              </li>
-            ))}
-          </ul>
-        )}
+        {from &&
+          suggestions.from.length > 0 &&
+          (() => {
+            const elements: JSX.Element[] = [];
+            suggestions.from.forEach((place: Place, index: number) => {
+              elements.push(
+                <li
+                  key={place.id}
+                  className={`p-2 border-gray-100 hover:bg-gray-200 cursor-pointer ${
+                    index === 0 && place.placeName.startsWith(from)
+                      ? "text-gray-700"
+                      : "text-gray-400"
+                  }`}
+                  onClick={() => handleSuggestionClick(place, "from")}
+                >
+                  {place.placeName}
+                </li>
+              );
+            });
+            return (
+              <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto custom-scrollbar">
+                {elements}
+              </ul>
+            );
+          })()}
       </div>
       <div className="flex justify-center items-center">
         <GoArrowSwitch className="text-1xl text-jet-black-500" />
@@ -91,23 +100,31 @@ const PlacesSearch: React.FC = () => {
           onChange={(e) => handleInputChange(e, "to")}
           className="w-full p-3 border rounded"
         />
-        {to && suggestions.to.length > 0 && (
-          <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto custom-scrollbar">
-            {suggestions.to.map((place, index) => (
-              <li
-                key={place.id}
-                className={`p-2 hover:bg-gray-200 cursor-pointer ${
-                  index === 0 && place.placeName.startsWith(to)
-                    ? "text-gray-700"
-                    : "text-gray-400"
-                }`}
-                onClick={() => handleSuggestionClick(place, "to")}
-              >
-                {place.placeName}
-              </li>
-            ))}
-          </ul>
-        )}
+        {to &&
+          suggestions.to.length > 0 &&
+          (() => {
+            const elements: JSX.Element[] = [];
+            suggestions.to.forEach((place: Place, index: number) => {
+              elements.push(
+                <li
+                  key={place.id}
+                  className={`p-2 border-gray-100 hover:bg-gray-200 cursor-pointer ${
+                    index === 0 && place.placeName.startsWith(to)
+                      ? "text-gray-700"
+                      : "text-gray-400"
+                  }`}
+                  onClick={() => handleSuggestionClick(place, "to")}
+                >
+                  {place.placeName}
+                </li>
+              );
+            });
+            return (
+              <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto custom-scrollbar">
+                {elements}
+              </ul>
+            );
+          })()}
       </div>
     </div>
   );
