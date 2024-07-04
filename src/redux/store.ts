@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import passengerReducer from "../features/passengerSlice";
 import dateRangeSlice from "../features/dateRangeSlice";
-import placesSlice from "../features/placeSlice";
+import placesSlice from "../features/placesSlice";
 
 const store = configureStore({
   reducer: {

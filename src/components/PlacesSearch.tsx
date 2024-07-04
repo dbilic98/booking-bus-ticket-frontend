@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { fetchPlaces } from "../features/placeSlice";
+import { fetchPlaces } from "../features/placesSlice";
 import { AppDispatch } from "../redux/store";
 import { GoArrowSwitch } from "react-icons/go";
-import { Place } from "../features/placeSlice";
+import { Place } from "../features/placesSlice";
 import "../index.css";
 
 const PlacesSearch: React.FC = () => {

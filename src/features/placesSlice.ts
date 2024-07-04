@@ -45,7 +45,6 @@ const placesSlice = createSlice({
       .addCase(fetchPlaces.fulfilled, (state, action) => {
         state.loading = false;
         state.places = action.payload;
-        console.log("Fetched places:", action.payload); // Dodala redak za ispis
       })
 
       .addCase(fetchPlaces.rejected, (state, action) => {
