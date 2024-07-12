@@ -1,33 +1,39 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
-import { setStartDate, setEndDate } from "../features/dateRangeSlice";
+import {
+  setStartDate as setReduxStartDate,
+  setEndDate as setReduxEndDate,
+} from "../features/dateRangeSlice";
+import { MdDateRange } from "react-icons/md";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { MdDateRange } from "react-icons/md";
 import "../index.css";
 
-const getCurrentDate = (): Date => {
-  return new Date();
-};
+interface DateRangePickerRoundtripProps {
+  startDate: Date;
+  setStartDate: (date: Date) => void;
+  endDate: Date | null;
+  setEndDate: (date: Date | null) => void;
+}
 
-const DateRangePickerRoundtrip: React.FC = () => {
+const DateRangePickerRoundtrip: React.FC<DateRangePickerRoundtripProps> = ({
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate,
+}) => {
   const dispatch = useDispatch();
-  const [startDate, setStartDateState] = useState<Date | null>(
-    getCurrentDate()
-  );
-  const [endDate, setEndDateState] = useState<Date | null>(null);
 
   const handleStartDateChange = (date: Date | null) => {
-    setStartDateState(date);
     if (date) {
-      dispatch(setStartDate(date.toISOString().split("T")[0]));
+      setStartDate(date);
+      dispatch(setReduxStartDate(date.toISOString().split("T")[0]));
     }
   };
-
   const handleEndDateChange = (date: Date | null) => {
-    setEndDateState(date);
     if (date) {
-      dispatch(setEndDate(date.toISOString().split("T")[0]));
+      setEndDate(date);
+      dispatch(setReduxEndDate(date.toISOString().split("T")[0]));
     }
   };
 
@@ -40,7 +46,7 @@ const DateRangePickerRoundtrip: React.FC = () => {
         type="text"
         className="w-full p-3 pl-8 border rounded bg-gray-50 border-gray-300 text-gray-900 text-sm"
         onClick={onClick}
-        value={value || placeholder}
+        value={value}
         placeholder="RETURN DATE"
         readOnly
       />
@@ -55,7 +61,7 @@ const DateRangePickerRoundtrip: React.FC = () => {
           selected={startDate}
           onChange={handleStartDateChange}
           dateFormat="yyyy-MM-dd"
-          minDate={getCurrentDate()}
+          minDate={new Date()}
           customInput={<CustomDatePickerInput />}
         />
       </div>
@@ -66,7 +72,7 @@ const DateRangePickerRoundtrip: React.FC = () => {
           selected={endDate}
           onChange={handleEndDateChange}
           dateFormat="yyyy-MM-dd"
-          minDate={startDate || getCurrentDate()}
+          minDate={startDate}
           customInput={<CustomDatePickerInput />}
         />
       </div>

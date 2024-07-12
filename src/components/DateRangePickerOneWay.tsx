@@ -1,25 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
-import { setStartDate } from "../features/dateRangeSlice";
+import { setStartDate as setReduxStartDate } from "../features/dateRangeSlice";
+import { MdDateRange } from "react-icons/md";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { MdDateRange } from "react-icons/md";
 import "../index.css";
 
-const getCurrentDate = (): Date => {
-  return new Date();
-};
+interface DateRangePickerOneWayProps {
+  startDate: Date;
+  setStartDate: (date: Date) => void;
+}
 
-const DateRangePickerOneWay: React.FC = () => {
+const DateRangePickerOneWay: React.FC<DateRangePickerOneWayProps> = ({
+  startDate,
+  setStartDate,
+}) => {
   const dispatch = useDispatch();
-  const [startDate, setStartDateState] = useState<Date | null>(
-    getCurrentDate()
-  );
 
   const handleStartDateChange = (date: Date | null) => {
-    setStartDateState(date);
     if (date) {
-      dispatch(setStartDate(date.toISOString().split("T")[0]));
+      setStartDate(date);
+      dispatch(setReduxStartDate(date.toISOString().split("T")[0]));
     }
   };
 
@@ -46,7 +47,7 @@ const DateRangePickerOneWay: React.FC = () => {
           selected={startDate}
           onChange={handleStartDateChange}
           dateFormat="yyyy-MM-dd"
-          minDate={getCurrentDate()}
+          minDate={new Date()}
           customInput={<CustomDatePickerInput />}
         />
       </div>
