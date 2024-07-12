@@ -6,13 +6,17 @@ import { GoArrowSwitch } from "react-icons/go";
 import { Place } from "../features/placesSlice";
 import "../index.css";
 
-const PlacesSearch: React.FC = () => {
+interface PlacesSearchProps {
+  placeSelect: (field: "from" | "to", place: Place) => void;
+}
+
+const PlacesSearch: React.FC<PlacesSearchProps> = ({ placeSelect }) => {
   const dispatch: AppDispatch = useDispatch();
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
 
-  const [selectedFrom, setSelectedFrom] = useState("");
-  const [selectedTo, setSelectedTo] = useState("");
+  const [selectedFrom, setSelectedFrom] = useState<Place | null>(null);
+  const [selectedTo, setSelectedTo] = useState<Place | null>(null);
 
   const [suggestions, setSuggestions] = useState<{ [key: string]: Place[] }>({
     from: [],
@@ -39,18 +43,19 @@ const PlacesSearch: React.FC = () => {
     });
   };
 
-  const handleSuggestionClick = (place: any, field: "from" | "to") => {
+  const handleSuggestionClick = (place: Place, field: "from" | "to") => {
     if (field === "from") {
       setFrom(place.placeName);
-      setSelectedFrom(place.placeName);
+      setSelectedFrom(place);
     } else {
       setTo(place.placeName);
-      setSelectedTo(place.placeName);
+      setSelectedTo(place);
     }
     setSuggestions((prev) => ({
       ...prev,
       [field]: [],
     }));
+    placeSelect(field, place);
   };
 
   return (
