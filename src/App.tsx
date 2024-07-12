@@ -4,7 +4,7 @@ import SearchForm from "./components/SearchForm";
 import "./index.css";
 
 const App: React.FC = () => {
-  const [currentDate, setCurrentDate] = useState("");
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   return (
     <div className="min-h-screen flex flex-col">
