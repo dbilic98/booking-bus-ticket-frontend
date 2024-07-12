@@ -1,15 +1,53 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { fetchRoutes } from "../features/routesSlice";
+import { AppDispatch } from "../redux/store";
+import { Place } from "../features/placesSlice";
+import { Routes } from "../features/routesSlice";
+import { format } from "date-fns";
 import PassengerForm from "./PassengerForm";
-import DateRangePickerRoundtrip from "../components/DateRangePickerRoundtrip";
+import DateRangePickerRoundtrip from "./DateRangePickerRoundtrip";
 import DateRangePickerOneWayRoute from "./DateRangePickerOneWay";
-import PlacesSearch from "../components/PlacesSearch";
+import PlacesSearch from "./PlacesSearch";
 
 const SearchForm: React.FC<{
-  currentDate: string;
-  setCurrentDate: (date: string) => void;
+  currentDate: Date;
+  setCurrentDate: (date: Date) => void;
 }> = ({ currentDate, setCurrentDate }) => {
   const [showPassengerForm, setShowPassengerForm] = useState(false);
   const [tripType, setTripType] = useState("roundtrip");
+  const [startPlace, setStartPlace] = useState<Place | null>(null);
+  const [endPlace, setEndPlace] = useState<Place | null>(null);
+  const [startDate, setStartDate] = useState<Date>(currentDate);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+
+  const dispatch: AppDispatch = useDispatch();
+
+  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (startPlace && endPlace && startDate) {
+      let searchParams: Routes = {
+        startPlaceId: startPlace.id,
+        endPlaceId: endPlace.id,
+        scheduleDate: format(startDate, "yyyy-MM-dd"),
+      };
+
+      if (tripType === "roundtrip" && endDate) {
+        searchParams.endScheduleDate = format(endDate, "yyyy-MM-dd");
+      }
+
+      dispatch(fetchRoutes(searchParams));
+    }
+  };
+
+  const handlePlaceSelect = (field: "from" | "to", place: Place) => {
+    if (field === "from") {
+      setStartPlace(place);
+    } else {
+      setEndPlace(place);
+    }
+  };
 
   const toggleCounterForm = () => {
     setShowPassengerForm(!showPassengerForm);
@@ -64,14 +102,26 @@ const SearchForm: React.FC<{
         </label>
       </div>
 
-      <form className="space-y-6">
+      <form className="space-y-6" onSubmit={handleSearch}>
         <div className="flex space-x-4">
-          <PlacesSearch />
+          <PlacesSearch placeSelect={handlePlaceSelect} />
         </div>
 
         <div className="w-full p-3 border rounded">
-          {tripType === "roundtrip" && <DateRangePickerRoundtrip />}
-          {tripType === "oneway" && <DateRangePickerOneWayRoute />}
+          {tripType === "roundtrip" && (
+            <DateRangePickerRoundtrip
+              startDate={startDate}
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+            />
+          )}
+          {tripType === "oneway" && (
+            <DateRangePickerOneWayRoute
+              startDate={startDate}
+              setStartDate={setStartDate}
+            />
+          )}
         </div>
 
         <div className="w-full p-3 border rounded">
