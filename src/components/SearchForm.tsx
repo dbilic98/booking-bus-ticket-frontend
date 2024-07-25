@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { fetchRoutes } from "../features/routesSlice";
+import { useNavigate } from "react-router-dom";
+import { fetchRoutes, SearchParams } from "../features/routesSlice";
 import { AppDispatch } from "../redux/store";
 import { Place } from "../features/placesSlice";
-import { Routes } from "../features/routesSlice";
 import { format } from "date-fns";
 import PassengerForm from "./PassengerForm";
 import DateRangePickerRoundtrip from "./DateRangePickerRoundtrip";
@@ -22,12 +22,13 @@ const SearchForm: React.FC<{
   const [endDate, setEndDate] = useState<Date | null>(null);
 
   const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (startPlace && endPlace && startDate) {
-      let searchParams: Routes = {
+      let searchParams: SearchParams = {
         startPlaceId: startPlace.id,
         endPlaceId: endPlace.id,
         scheduleDate: format(startDate, "yyyy-MM-dd"),
@@ -38,6 +39,9 @@ const SearchForm: React.FC<{
       }
 
       dispatch(fetchRoutes(searchParams));
+      navigate("/route-view", {
+        state: { searchParams, startPlace, endPlace },
+      });
     }
   };
 
