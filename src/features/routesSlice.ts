@@ -3,24 +3,41 @@ import axios from "axios";
 
 export const fetchRoutes = createAsyncThunk(
   "routes/fetchRoutes",
-  async (params: Routes) => {
+  async (params: SearchParams) => {
     const { startPlaceId, endPlaceId, scheduleDate, endScheduleDate } = params;
 
     const url = endScheduleDate
       ? `http://localhost:8081/routes?startPlaceId=${startPlaceId}&endPlaceId=${endPlaceId}&scheduleDate=${scheduleDate}&endScheduleDate=${endScheduleDate}`
       : `http://localhost:8081/routes?startPlaceId=${startPlaceId}&endPlaceId=${endPlaceId}&scheduleDate=${scheduleDate}`;
 
-    console.log("Fetching URL:", url);
     try {
       const response = await axios.get(url);
-      return response.data as Routes[];
+      return response.data as SearchParams[];
     } catch (error) {
       throw error;
     }
   }
 );
+export interface Schedule {
+  id: number;
+  scheduleDate: string;
+  departureTime: string;
+  arrivalTime: string;
+  companyName: string;
+}
 
-export interface Routes {
+export interface Route {
+  id: number;
+  startPlaceId: number;
+  endPlaceId: number;
+  scheduleDate: string;
+  endScheduleDate?: string;
+  basePrice: number;
+  totalDistance: number;
+  scheduleList: Schedule[];
+}
+
+export interface SearchParams {
   startPlaceId: number;
   endPlaceId: number;
   scheduleDate: string;
@@ -28,7 +45,7 @@ export interface Routes {
 }
 
 interface RoutesState {
-  routes: Routes[];
+  routes: SearchParams[];
   loading: boolean;
   error: string | null;
 }
