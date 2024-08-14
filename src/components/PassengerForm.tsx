@@ -1,48 +1,56 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
-import { increment, decrement } from "../features/passengerSlice";
+import {
+  fetchPassengerCategories,
+  updateSelectedPassengers,
+} from "../features/passengerSlice";
 
 const PassengerForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { child, adult, student } = useSelector(
+  const { totalPassengers, categories, selectedPassengers } = useSelector(
     (state: RootState) => state.passenger
   );
 
-  const handleIncrement = (field: keyof RootState["passenger"]) => {
-    dispatch(increment(field));
+  useEffect(() => {
+    dispatch(fetchPassengerCategories());
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log("Categories:", categories);
+    console.log("Selected Passengers:", selectedPassengers);
+  }, [categories, selectedPassengers]);
+
+  const handleIncrement = (categoryName: string) => {
+    if (totalPassengers < 8) {
+      const count = (selectedPassengers[categoryName] || 0) + 1;
+      console.log("Incrementing", categoryName, count);
+      dispatch(updateSelectedPassengers({ categoryName, count }));
+    }
   };
 
-  const handleDecrement = (field: keyof RootState["passenger"]) => {
-    dispatch(decrement(field));
+  const handleDecrement = (categoryName: string) => {
+    if ((selectedPassengers[categoryName] || 0) > 0) {
+      const count = (selectedPassengers[categoryName] || 0) - 1;
+      console.log("Decrementing", categoryName, count);
+      dispatch(updateSelectedPassengers({ categoryName, count }));
+    }
   };
 
   return (
     <form className="max-w-xs mx-auto">
-      <CounterField
-        label="Child"
-        value={child}
-        increment={() => handleIncrement("child")}
-        decrement={() => handleDecrement("child")}
-        min={0}
-        max={20}
-      />
-      <CounterField
-        label="Adult"
-        value={adult}
-        increment={() => handleIncrement("adult")}
-        decrement={() => handleDecrement("adult")}
-        min={1}
-        max={30}
-      />
-      <CounterField
-        label="Student"
-        value={student}
-        increment={() => handleIncrement("student")}
-        decrement={() => handleDecrement("student")}
-        min={0}
-        max={30}
-      />
+      {categories.map((category) => (
+        <CounterField
+          key={category.categoryName}
+          label={category.categoryName}
+          value={selectedPassengers[category.categoryName] || 0}
+          increment={() => handleIncrement(category.categoryName)}
+          decrement={() => handleDecrement(category.categoryName)}
+          min={0}
+          max={10}
+          totalPassengers={totalPassengers}
+        />
+      ))}
     </form>
   );
 };
@@ -54,6 +62,7 @@ interface CounterFieldProps {
   decrement: () => void;
   min: number;
   max: number;
+  totalPassengers: number;
 }
 
 const CounterField: React.FC<CounterFieldProps> = ({
@@ -63,6 +72,7 @@ const CounterField: React.FC<CounterFieldProps> = ({
   decrement,
   min,
   max,
+  totalPassengers,
 }) => {
   return (
     <div className="relative flex items-center mb-2">
@@ -100,7 +110,7 @@ const CounterField: React.FC<CounterFieldProps> = ({
         type="button"
         onClick={increment}
         className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
-        disabled={value >= max}
+        disabled={value >= max || totalPassengers >= 6}
       >
         <svg
           className="w-3 h-3 text-gray-900 dark:text-white"
