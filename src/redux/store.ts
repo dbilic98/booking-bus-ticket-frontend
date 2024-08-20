@@ -3,6 +3,7 @@ import passengerReducer from "../features/passengerSlice";
 import dateRangeSlice from "../features/dateRangeSlice";
 import placesSlice from "../features/placesSlice";
 import routesSlice from "../features/routesSlice";
+import returnRoutesSlice from "../features/returnRoutesSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     dateRang: dateRangeSlice,
     places: placesSlice,
     routes: routesSlice,
+    returnRoutes: returnRoutesSlice,
   },
 });
 
