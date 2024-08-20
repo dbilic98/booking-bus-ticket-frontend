@@ -15,7 +15,7 @@ const SearchForm: React.FC<{
   setCurrentDate: (date: Date) => void;
 }> = ({ currentDate, setCurrentDate }) => {
   const [showPassengerForm, setShowPassengerForm] = useState(false);
-  const [tripType, setTripType] = useState("roundtrip");
+  const [tripType, setTripType] = useState<"roundtrip" | "oneway">("roundtrip");
   const [startPlace, setStartPlace] = useState<Place | null>(null);
   const [endPlace, setEndPlace] = useState<Place | null>(null);
   const [startDate, setStartDate] = useState<Date>(currentDate);
@@ -40,7 +40,7 @@ const SearchForm: React.FC<{
 
       dispatch(fetchRoutes(searchParams));
       navigate("/route-view", {
-        state: { searchParams, startPlace, endPlace },
+        state: { searchParams, startPlace, endPlace, tripType },
       });
     }
   };
