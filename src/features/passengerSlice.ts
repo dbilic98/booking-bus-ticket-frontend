@@ -1,37 +1,83 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
+import { createSelector } from "@reduxjs/toolkit";
+import { RootState } from "../redux/store";
 
-interface PassengerSlice {
+export const fetchPassengerCategories = createAsyncThunk(
+  "passenger-categories/fetchPassengerCategories",
+  async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8081/passenger-categories`
+      );
+
+      console.log("Fetched categories:", response.data);
+      return response.data.items as PassengerCategory[];
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+interface PassengerCategory {
+  categoryName: string;
+  discountPercentage: number;
+}
+
+interface PassengerState {
   child: number;
   adult: number;
   student: number;
+  totalPassengers: number;
+  categories: PassengerCategory[];
+  selectedPassengers: { [key: string]: number };
 }
 
-const initialState: PassengerSlice = {
+const initialState: PassengerState = {
   child: 0,
   adult: 0,
   student: 0,
+  totalPassengers: 0,
+  categories: [],
+  selectedPassengers: {},
 };
 
 const passengerSlice = createSlice({
-  name: "counter",
+  name: "passenger",
   initialState,
   reducers: {
-    increment: (
+    updateSelectedPassengers: (
       state,
-      action: PayloadAction<"child" | "adult" | "student">
+      action: PayloadAction<{ categoryName: string; count: number }>
     ) => {
-      state[action.payload] += 1;
+      state.selectedPassengers[action.payload.categoryName] =
+        action.payload.count;
     },
-    decrement: (
+    setPassengerCategories: (
       state,
-      action: PayloadAction<"child" | "adult" | "student">
+      action: PayloadAction<PassengerCategory[]>
     ) => {
-      if (state[action.payload] > 0) {
-        state[action.payload] -= 1;
-      }
+      state.categories = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchPassengerCategories.fulfilled, (state, action) => {
+      state.categories = action.payload;
+    });
   },
 });
 
-export const { increment, decrement } = passengerSlice.actions;
+export const selectTotalSelectedPassengers = createSelector(
+  (state: RootState) => state.passenger.categories,
+  (state: RootState) => state.passenger.selectedPassengers,
+  (
+    categories: PassengerCategory[],
+    selectedPassengers: { [key: string]: number }
+  ) =>
+    categories.reduce((total, category) => {
+      return total + (selectedPassengers[category.categoryName] || 0);
+    }, 0)
+);
+
+export const { updateSelectedPassengers } = passengerSlice.actions;
 export default passengerSlice.reducer;
