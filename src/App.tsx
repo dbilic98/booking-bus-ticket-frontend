@@ -17,13 +17,12 @@ const App: React.FC = () => {
             <h1 className="text-5xl font-bold pl-8">SYSTEM</h1>
           </div>
 
-          <p className="pl-8 font-mallanna">
+          <div className="pl-8 font-mallanna">
             Welcome to our bus management platform! Here you can easily search
-            for available places, <hr></hr> book tickets and plan your trip. Our
-            mission is to make your trip as pleasant and stress-free as
-            possible. <hr></hr>
+            for available places, book tickets and plan your trip. Our mission
+            is to make your trip as pleasant and stress-free as possible.
             <p className="mt-1">We wish you a happy journey!</p>
-          </p>
+          </div>
         </div>
         <div className="bg-cream w-5/12 flex justify-center items-center">
           <SearchForm
