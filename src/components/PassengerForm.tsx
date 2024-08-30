@@ -16,41 +16,63 @@ const PassengerForm: React.FC = () => {
     dispatch(fetchPassengerCategories());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log("Categories:", categories);
-    console.log("Selected Passengers:", selectedPassengers);
-  }, [categories, selectedPassengers]);
+  useEffect(() => {}, [categories, selectedPassengers]);
 
   const handleIncrement = (categoryName: string) => {
     if (totalPassengers < 8) {
-      const count = (selectedPassengers[categoryName] || 0) + 1;
-      console.log("Incrementing", categoryName, count);
-      dispatch(updateSelectedPassengers({ categoryName, count }));
+      const discountPercentage =
+        categories.find((c) => c.categoryName === categoryName)
+          ?.discountPercentage || 0;
+
+      dispatch(
+        updateSelectedPassengers({
+          categoryName,
+          count:
+            (selectedPassengers.find((p) => p.categoryName === categoryName)
+              ?.count || 0) + 1,
+          discountPercentage,
+        })
+      );
     }
   };
 
   const handleDecrement = (categoryName: string) => {
-    if ((selectedPassengers[categoryName] || 0) > 0) {
-      const count = (selectedPassengers[categoryName] || 0) - 1;
-      console.log("Decrementing", categoryName, count);
-      dispatch(updateSelectedPassengers({ categoryName, count }));
+    const passenger = selectedPassengers.find(
+      (p) => p.categoryName === categoryName
+    );
+
+    if (passenger && passenger.count > 0) {
+      console.log("Decrementing", categoryName);
+
+      dispatch(
+        updateSelectedPassengers({
+          categoryName,
+          count: passenger.count - 1,
+          discountPercentage: passenger.discountPercentage,
+        })
+      );
     }
   };
 
   return (
     <form className="max-w-xs mx-auto">
-      {categories.map((category) => (
-        <CounterField
-          key={category.categoryName}
-          label={category.categoryName}
-          value={selectedPassengers[category.categoryName] || 0}
-          increment={() => handleIncrement(category.categoryName)}
-          decrement={() => handleDecrement(category.categoryName)}
-          min={0}
-          max={10}
-          totalPassengers={totalPassengers}
-        />
-      ))}
+      {categories.map((category) => {
+        const passenger = selectedPassengers.find(
+          (p) => p.categoryName === category.categoryName
+        );
+        return (
+          <CounterField
+            key={category.categoryName}
+            label={category.categoryName}
+            value={passenger?.count || 0}
+            increment={() => handleIncrement(category.categoryName)}
+            decrement={() => handleDecrement(category.categoryName)}
+            min={0}
+            max={10}
+            totalPassengers={totalPassengers}
+          />
+        );
+      })}
     </form>
   );
 };
