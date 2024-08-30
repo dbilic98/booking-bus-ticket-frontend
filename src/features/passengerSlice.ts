@@ -48,7 +48,7 @@ const passengerSlice = createSlice({
   reducers: {
     updateSelectedPassengers: (
       state,
-      action: PayloadAction<{ categoryName: string; count: number }>
+      action: PayloadAction<SelectedPassenger>
     ) => {
       state.selectedPassengers[action.payload.categoryName] =
         action.payload.count;
