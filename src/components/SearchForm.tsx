@@ -9,6 +9,8 @@ import PassengerForm from "./PassengerForm";
 import DateRangePickerRoundtrip from "./DateRangePickerRoundtrip";
 import DateRangePickerOneWayRoute from "./DateRangePickerOneWay";
 import PlacesSearch from "./PlacesSearch";
+import { useSelector } from "react-redux";
+import { selectTotalSelectedPassengers } from "../features/passengerSlice";
 
 const SearchForm: React.FC<{
   currentDate: Date;
@@ -55,6 +57,15 @@ const SearchForm: React.FC<{
 
   const toggleCounterForm = () => {
     setShowPassengerForm(!showPassengerForm);
+  };
+
+  const totalPassengers = useSelector(selectTotalSelectedPassengers);
+
+  const isSearchDisabled = () => {
+    return (
+      totalPassengers === 0 ||
+      (tripType === "roundtrip" && (!startDate || !endDate))
+    );
   };
 
   return (
@@ -146,6 +157,7 @@ const SearchForm: React.FC<{
           <button
             type="submit"
             className="w-full p-3 bg-jet-black text-white rounded mt-14"
+            disabled={isSearchDisabled()}
           >
             SEARCH
           </button>
