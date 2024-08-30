@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const fetchRoutes = createAsyncThunk(
@@ -44,13 +44,21 @@ export interface SearchParams {
   endScheduleDate?: string;
 }
 
+interface SelectedRoute {
+  basePrice: number;
+  departureTime: string;
+  arrivalTime: string;
+}
+
 interface RoutesState {
+  selectedRoute: SelectedRoute | null;
   routes: SearchParams[];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: RoutesState = {
+  selectedRoute: null,
   routes: [],
   loading: false,
   error: null,
@@ -59,7 +67,11 @@ const initialState: RoutesState = {
 const routesSlice = createSlice({
   name: "routes",
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedRoute: (state, action: PayloadAction<SelectedRoute>) => {
+      state.selectedRoute = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchRoutes.pending, (state) => {
@@ -77,4 +89,5 @@ const routesSlice = createSlice({
   },
 });
 
+export const { setSelectedRoute } = routesSlice.actions;
 export default routesSlice.reducer;
