@@ -37,7 +37,7 @@ const DateRangePickerRoundtrip: React.FC<DateRangePickerRoundtripProps> = ({
     }
   };
 
-  const CustomDatePickerInput = ({ value, onClick, placeholder }: any) => (
+  const CustomDatePickerInput = ({ value, onClick }: any) => (
     <div className="relative">
       <div className="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
         <MdDateRange className="w-4 h-4 text-black-500" />
