@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
@@ -13,6 +13,7 @@ import { format, parseISO } from "date-fns";
 import { BsArrowLeftRight, BsFillPersonFill } from "react-icons/bs";
 import { FaGripLinesVertical } from "react-icons/fa";
 import { CgArrowLongDownC } from "react-icons/cg";
+import { setSelectedRoute } from "../features/routesSlice";
 
 const RoutesView: React.FC = () => {
   const location = useLocation();
@@ -22,8 +23,9 @@ const RoutesView: React.FC = () => {
   const tripType = location.state?.tripType as "roundtrip" | "oneway";
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [selectedRoute, setSelectedRoute] = useState<{
+  const [selectedRoute, setSelectedRoutes] = useState<{
     basePrice: number;
     departureTime: string;
     arrivalTime: string;
@@ -53,12 +55,12 @@ const RoutesView: React.FC = () => {
       departureTime: schedule.departureTime,
       arrivalTime: schedule.arrivalTime,
     };
-
-    setSelectedRoute(routeData);
+    setSelectedRoutes(routeData);
   };
 
   const handleContinue = () => {
     if (selectedRoute) {
+      dispatch(setSelectedRoute(selectedRoute));
       const routePath =
         tripType === "oneway" ? "/seat-selection" : "/return-route";
 
@@ -232,7 +234,9 @@ const RoutesView: React.FC = () => {
                   </p>
                 </div>
                 <div>
-                  <p className="font-bold pt-4">PASSENGER</p>
+                  <p className="font-bold pt-4">
+                    PASSENGER {totalSelectedPassengers}
+                  </p>
                 </div>
               </div>
             )}
