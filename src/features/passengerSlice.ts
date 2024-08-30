@@ -24,13 +24,19 @@ interface PassengerCategory {
   discountPercentage: number;
 }
 
+interface SelectedPassenger {
+  categoryName: string;
+  discountPercentage: number;
+  count: number;
+}
+
 interface PassengerState {
   child: number;
   adult: number;
   student: number;
   totalPassengers: number;
   categories: PassengerCategory[];
-  selectedPassengers: { [key: string]: number };
+  selectedPassengers: SelectedPassenger[];
 }
 
 const initialState: PassengerState = {
@@ -39,7 +45,7 @@ const initialState: PassengerState = {
   student: 0,
   totalPassengers: 0,
   categories: [],
-  selectedPassengers: {},
+  selectedPassengers: [],
 };
 
 const passengerSlice = createSlice({
@@ -50,14 +56,24 @@ const passengerSlice = createSlice({
       state,
       action: PayloadAction<SelectedPassenger>
     ) => {
-      state.selectedPassengers[action.payload.categoryName] =
-        action.payload.count;
+      const passengerIndex = state.selectedPassengers.findIndex(
+        (p) => p.categoryName === action.payload.categoryName
+      );
+
+      if (passengerIndex !== -1) {
+        state.selectedPassengers[passengerIndex].count = action.payload.count;
+      } else {
+        state.selectedPassengers.push(action.payload);
+      }
     },
     setPassengerCategories: (
       state,
       action: PayloadAction<PassengerCategory[]>
     ) => {
-      state.categories = action.payload;
+      state.totalPassengers = state.selectedPassengers.reduce(
+        (total, passenger) => total + passenger.count,
+        0
+      );
     },
   },
   extraReducers: (builder) => {
@@ -68,16 +84,30 @@ const passengerSlice = createSlice({
 });
 
 export const selectTotalSelectedPassengers = createSelector(
-  (state: RootState) => state.passenger.categories,
   (state: RootState) => state.passenger.selectedPassengers,
-  (
-    categories: PassengerCategory[],
-    selectedPassengers: { [key: string]: number }
-  ) =>
-    categories.reduce((total, category) => {
-      return total + (selectedPassengers[category.categoryName] || 0);
-    }, 0)
+  (selectedPassengers) =>
+    selectedPassengers.reduce((total, passenger) => total + passenger.count, 0)
 );
+
+export const formatPassengerSelection = (
+  selectedPassengers: SelectedPassenger[]
+): string[] => {
+  return selectedPassengers.reduce((formattedList: string[], passenger) => {
+    if (passenger.count > 0) {
+      formattedList.push(`${passenger.categoryName} ${passenger.count}`);
+    }
+    return formattedList;
+  }, []);
+};
+
+export const calculateTotalPrice = (
+  selectedPassengers: SelectedPassenger[],
+  basePrice: number
+): number => {
+  return selectedPassengers.reduce((total, passenger) => {
+    return total + basePrice * passenger.discountPercentage * passenger.count;
+  }, 0);
+};
 
 export const { updateSelectedPassengers } = passengerSlice.actions;
 export default passengerSlice.reducer;
