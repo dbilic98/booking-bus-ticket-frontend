@@ -9,7 +9,7 @@ import {
 const PassengerForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { totalPassengers, categories, selectedPassengers } = useSelector(
-    (state: RootState) => state.passenger
+    (state: RootState) => state.passengers
   );
 
   useEffect(() => {
