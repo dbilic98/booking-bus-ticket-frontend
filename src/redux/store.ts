@@ -1,17 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
-import passengerReducer from "../features/passengerSlice";
+import passengerSlice from "../features/passengerSlice";
 import dateRangeSlice from "../features/dateRangeSlice";
 import placesSlice from "../features/placesSlice";
 import routesSlice from "../features/routesSlice";
 import returnRoutesSlice from "../features/returnRoutesSlice";
+import seatsSlice from "../features/seatsSlice";
 
 const store = configureStore({
   reducer: {
-    passenger: passengerReducer,
+    passengers: passengerSlice,
     dateRang: dateRangeSlice,
     places: placesSlice,
     routes: routesSlice,
     returnRoutes: returnRoutesSlice,
+    seats: seatsSlice,
   },
 });
 
