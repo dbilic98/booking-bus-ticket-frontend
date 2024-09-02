@@ -11,7 +11,6 @@ export const fetchPassengerCategories = createAsyncThunk(
         `http://localhost:8081/passenger-categories`
       );
 
-      console.log("Fetched categories:", response.data);
       return response.data.items as PassengerCategory[];
     } catch (error) {
       throw error;
@@ -84,7 +83,7 @@ const passengerSlice = createSlice({
 });
 
 export const selectTotalSelectedPassengers = createSelector(
-  (state: RootState) => state.passenger.selectedPassengers,
+  (state: RootState) => state.passengers.selectedPassengers,
   (selectedPassengers) =>
     selectedPassengers.reduce((total, passenger) => total + passenger.count, 0)
 );
