@@ -14,6 +14,16 @@ export const fetchPlaces = createAsyncThunk(
     }
   }
 );
+export const findPlaces = createAsyncThunk("places/findPlaces", async () => {
+  try {
+    const response = await axios.get(
+      `http://localhost:8081/places?pageNumber=0&pageSize=10`
+    );
+    return response.data.items as Place[];
+  } catch (error) {
+    throw error;
+  }
+});
 
 export interface Place {
   id: number;
@@ -50,6 +60,17 @@ const placesSlice = createSlice({
       .addCase(fetchPlaces.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch places";
+      })
+
+      .addCase(findPlaces.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(findPlaces.fulfilled, (state, action) => {
+        state.loading = false;
+        state.places = action.payload;
+      })
+      .addCase(findPlaces.rejected, (state) => {
+        state.loading = false;
       });
   },
 });
