@@ -8,6 +8,7 @@ import seatsSlice from "../features/seatsSlice";
 import companySlice from "../features/admin/companySlice";
 import busSlice from "../features/admin/busSlice";
 import routeAdminSlice from "../features/admin/routeAdminSlice";
+import scheduleSlice from "../features/admin/scheduleSlice";
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     company: companySlice,
     buses: busSlice,
     route: routeAdminSlice,
+    schedule: scheduleSlice,
   },
 });
 
