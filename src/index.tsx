@@ -10,8 +10,9 @@ import ReturnRoutesView from "./components/ReturnRoutesView";
 import SeatSelection from "./components/SeatSelection";
 import Dashboard from "./admin/Dashboard";
 import Company from "./admin/Company";
-// import Buses from "./admin/Bus";
+import Buses from "./admin/Bus";
 import RouteAdmin from "./admin/RouteAdmin";
+import Schedule from "./admin/Schedule";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -26,8 +27,9 @@ root.render(
         <Route path="/seat-selection" element={<SeatSelection />} />
         <Route path="/admin" element={<Dashboard />} />
         <Route path="/admin/company" element={<Company />} />
-        {/* <Route path="/admin/bus" element={<Buses />} /> */}
+        <Route path="/admin/bus" element={<Buses />} />
         <Route path="/admin/route" element={<RouteAdmin />} />
+        <Route path="/admin/schedule" element={<Schedule />} />
       </Routes>
     </Router>
   </Provider>
