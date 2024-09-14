@@ -29,3 +29,7 @@
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
+
+.date-picker-custom {
+  width: 53.5vw;
+}
