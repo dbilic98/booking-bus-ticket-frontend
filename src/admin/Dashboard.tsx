@@ -10,10 +10,10 @@ const Dashboard: React.FC = () => {
       <div className="flex-grow p-20 bg-white">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold">Dashboard</h1>
-          <div className="flex items-center">
+          <div className="flex items-center pb-10">
             <FaUserAlt />
             <div className="ml-3">
-              <p className="font-semibold">Doris</p>
+              <p className="font-semibold">Admin</p>
             </div>
           </div>
         </div>
