@@ -42,7 +42,7 @@ const Sidebar: React.FC = () => {
       </nav>
 
       <div className="mt-auto pt-10">
-        <a href="/admin/logout" className="text-center text-sm text-[#333333]">
+        <a href="/admin/logout" className="text-center text-base text-black">
           Log out
         </a>
       </div>
