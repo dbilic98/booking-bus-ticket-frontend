@@ -9,7 +9,7 @@ import companySlice from "../features/admin/companySlice";
 import busSlice from "../features/admin/busSlice";
 import routeAdminSlice from "../features/admin/routeAdminSlice";
 import scheduleSlice from "../features/admin/scheduleSlice";
-
+import authSlice from "../features/auth/authSlice";
 const store = configureStore({
   reducer: {
     passengers: passengerSlice,
@@ -22,6 +22,7 @@ const store = configureStore({
     buses: busSlice,
     route: routeAdminSlice,
     schedule: scheduleSlice,
+    auth: authSlice,
   },
 });
 
