@@ -26,9 +26,11 @@ const RoutesView: React.FC = () => {
   const dispatch = useDispatch();
 
   const [selectedRoute, setSelectedRoutes] = useState<{
+    id: number;
     basePrice: number;
     departureTime: string;
     arrivalTime: string;
+    scheduleId: number;
   } | null>(null);
 
   const formattedDate = format(
@@ -51,9 +53,11 @@ const RoutesView: React.FC = () => {
 
   const handleSelect = (route: Route, schedule: Schedule) => {
     const routeData = {
+      id: route.id,
       basePrice: route.basePrice,
       departureTime: schedule.departureTime,
       arrivalTime: schedule.arrivalTime,
+      scheduleId: schedule.id,
     };
     setSelectedRoutes(routeData);
   };

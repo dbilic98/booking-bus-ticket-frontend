@@ -6,7 +6,7 @@ import Navbar from "./Navbar";
 import { RootState } from "../redux/store";
 import { Place } from "../features/placesSlice";
 import { SearchReturnParams } from "../features/returnRoutesSlice";
-import { Route, Schedule } from "../features/returnRoutesSlice";
+import { Route, ScheduleReturn } from "../features/returnRoutesSlice";
 import { selectTotalSelectedPassengers } from "../features/passengerSlice";
 import { MdDateRange } from "react-icons/md";
 import { format, parseISO } from "date-fns";
@@ -25,9 +25,11 @@ const ReturnRoutesView: React.FC = () => {
   const dispatch = useDispatch();
 
   const [localSelectedReturnRoute, setLocalSelectedReturnRoute] = useState<{
+    id: number;
     basePrice: number;
     departureTime: string;
     arrivalTime: string;
+    scheduleId: number;
   } | null>(null);
 
   const formattedDate = format(
@@ -48,11 +50,13 @@ const ReturnRoutesView: React.FC = () => {
     ),
   }));
 
-  const handleSelect = (route: Route, schedule: Schedule) => {
+  const handleSelect = (route: Route, schedule: ScheduleReturn) => {
     const returnRouteData = {
+      id: route.id,
       basePrice: route.basePrice,
       departureTime: schedule.departureTime,
       arrivalTime: schedule.arrivalTime,
+      scheduleId: schedule.id,
     };
     setLocalSelectedReturnRoute(returnRouteData);
   };
@@ -150,7 +154,7 @@ const ReturnRoutesView: React.FC = () => {
               <div className="p-4 sm:p-6 overflow-x-auto">
                 <div className="space-y-4">
                   {filteredRoutes.map((route) =>
-                    route.scheduleList.map((schedule: Schedule) => (
+                    route.scheduleList.map((schedule: ScheduleReturn) => (
                       <div
                         key={schedule.id}
                         className="bg-white p-4 sm:p-6 shadow rounded-md flex flex-col md:flex-row justify-between items-start md:items-center"
