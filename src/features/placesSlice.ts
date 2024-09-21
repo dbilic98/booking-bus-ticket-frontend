@@ -1,12 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const getToken = () => localStorage.getItem("token");
+
 export const fetchPlaces = createAsyncThunk(
   "places/fetchPlaces",
   async (prefix: string) => {
     try {
+      const token = getToken();
       const response = await axios.get(
-        `http://localhost:8081/places/search?prefix=${prefix}`
+        `http://localhost:8081/places/search?prefix=${prefix}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       return response.data as Place[];
     } catch (error) {
@@ -16,8 +24,14 @@ export const fetchPlaces = createAsyncThunk(
 );
 export const findPlaces = createAsyncThunk("places/findPlaces", async () => {
   try {
+    const token = getToken();
     const response = await axios.get(
-      `http://localhost:8081/places?pageNumber=0&pageSize=10`
+      `http://localhost:8081/places?pageNumber=0&pageSize=10`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     return response.data.items as Place[];
   } catch (error) {

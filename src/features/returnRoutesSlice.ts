@@ -1,17 +1,24 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const getToken = () => localStorage.getItem("token");
+
 export const fetchReturnRoutes = createAsyncThunk(
   "returnRoutes/fetchReturnRoutes",
   async (params: SearchReturnParams) => {
     const { startPlaceId, endPlaceId, endScheduleDate, scheduleDate } = params;
 
     try {
+      const token = getToken();
       const response = await axios.get(
-        `http://localhost:8081/routes?startPlaceId=${startPlaceId}&endPlaceId=${endPlaceId}&endScheduleDate=${endScheduleDate}&scheduleDate=${scheduleDate}`
+        `http://localhost:8081/routes?startPlaceId=${startPlaceId}&endPlaceId=${endPlaceId}&endScheduleDate=${endScheduleDate}&scheduleDate=${scheduleDate}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
-      console.log("Fetched routes:", response.data);
       return response.data as SearchReturnParams[];
     } catch (error) {
       throw error;
@@ -19,7 +26,7 @@ export const fetchReturnRoutes = createAsyncThunk(
   }
 );
 
-export interface Schedule {
+export interface ScheduleReturn {
   id: number;
   endScheduleDate: string;
   scheduleDate: string;
@@ -36,7 +43,7 @@ export interface Route {
   scheduleDate: string;
   basePrice: number;
   totalDistance: number;
-  scheduleList: Schedule[];
+  scheduleList: ScheduleReturn[];
 }
 
 export interface SearchReturnParams {
@@ -44,12 +51,15 @@ export interface SearchReturnParams {
   endPlaceId: number;
   endScheduleDate: string;
   scheduleDate: string;
+  scheduleId: number;
 }
 
 export interface SelectedReturnRoute {
+  id: number;
   basePrice: number;
   departureTime: string;
   arrivalTime: string;
+  scheduleId: number;
 }
 
 interface RoutesState {

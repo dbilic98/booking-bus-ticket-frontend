@@ -1,12 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const getToken = () => localStorage.getItem("token");
+
 export const fetchSchedule = createAsyncThunk(
   "schedule/fetchSchedule",
   async () => {
     try {
+      const token = getToken();
       const response = await axios.get(
-        `http://localhost:8081/schedules/admin?pageNumber=0&pageSize=10`
+        `http://localhost:8081/schedules?pageNumber=0&pageSize=25`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       return response.data.items as Schedule[];
     } catch (error) {
@@ -31,13 +39,22 @@ export const addSchedule = createAsyncThunk(
     busId: number;
   }) => {
     try {
-      const response = await axios.post(`http://localhost:8081/schedules`, {
-        scheduleDate,
-        departureTime,
-        arrivalTime,
-        routeId,
-        busId,
-      });
+      const token = getToken();
+      const response = await axios.post(
+        `http://localhost:8081/schedules`,
+        {
+          scheduleDate,
+          departureTime,
+          arrivalTime,
+          routeId,
+          busId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -61,6 +78,7 @@ export const updateSchedule = createAsyncThunk(
     routeId: number;
   }) => {
     try {
+      const token = getToken();
       const response = await axios.put(
         `http://localhost:8081/schedules/${id}`,
         {
@@ -68,6 +86,11 @@ export const updateSchedule = createAsyncThunk(
           departureTime,
           arrivalTime,
           routeId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       return response.data;
@@ -81,7 +104,13 @@ export const deleteSchedule = createAsyncThunk(
   "schedule/deleteSchedule",
   async (id: number) => {
     try {
-      await axios.delete(`http://localhost:8081/schedules/${id}`);
+      const token = getToken();
+      await axios.delete(`http://localhost:8081/schedules/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
       return id;
     } catch (error) {
       throw error;

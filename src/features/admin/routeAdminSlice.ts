@@ -1,10 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const getToken = () => localStorage.getItem("token");
+
 export const fetchRoute = createAsyncThunk("route/fetchRoute", async () => {
   try {
+    const token = getToken();
     const response = await axios.get(
-      `http://localhost:8081/routes/admin?pageNumber=0&pageSize=10`
+      `http://localhost:8081/routes/admin?pageNumber=0&pageSize=25`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     return response.data.items as Route[];
   } catch (error) {
@@ -26,12 +34,21 @@ export const addRoute = createAsyncThunk(
     endPlaceId: number;
   }) => {
     try {
-      const response = await axios.post(`http://localhost:8081/routes`, {
-        basePrice,
-        totalDistance,
-        startPlaceId,
-        endPlaceId,
-      });
+      const token = getToken();
+      const response = await axios.post(
+        `http://localhost:8081/routes`,
+        {
+          basePrice,
+          totalDistance,
+          startPlaceId,
+          endPlaceId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -55,12 +72,21 @@ export const updateRoute = createAsyncThunk(
     endPlaceId: number;
   }) => {
     try {
-      const response = await axios.put(`http://localhost:8081/routes/${id}`, {
-        basePrice,
-        totalDistance,
-        startPlaceId,
-        endPlaceId,
-      });
+      const token = getToken();
+      const response = await axios.put(
+        `http://localhost:8081/routes/${id}`,
+        {
+          basePrice,
+          totalDistance,
+          startPlaceId,
+          endPlaceId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -72,7 +98,12 @@ export const deleteRoute = createAsyncThunk(
   "route/deleteRoute",
   async (id: number) => {
     try {
-      await axios.delete(`http://localhost:8081/routes/${id}`);
+      const token = getToken();
+      await axios.delete(`http://localhost:8081/routes/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return id;
     } catch (error) {
       throw error;

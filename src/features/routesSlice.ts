@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const getToken = () => localStorage.getItem("token");
+
 export const fetchRoutes = createAsyncThunk(
   "routes/fetchRoutes",
   async (params: SearchParams) => {
@@ -11,8 +13,16 @@ export const fetchRoutes = createAsyncThunk(
       : `http://localhost:8081/routes?startPlaceId=${startPlaceId}&endPlaceId=${endPlaceId}&scheduleDate=${scheduleDate}`;
 
     try {
-      const response = await axios.get(url);
-      return response.data as SearchParams[];
+      const token = getToken();
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response.data);
+      var a = response.data as SearchParams[];
+      console.log(a);
+      return a;
     } catch (error) {
       throw error;
     }
@@ -44,10 +54,12 @@ export interface SearchParams {
   endScheduleDate?: string;
 }
 
-interface SelectedRoute {
+export interface SelectedRoute {
+  id: number;
   basePrice: number;
   departureTime: string;
   arrivalTime: string;
+  scheduleId: number;
 }
 
 interface RoutesState {

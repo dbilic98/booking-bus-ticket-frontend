@@ -1,12 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const getToken = () => localStorage.getItem("token");
+
 export const fetchCompany = createAsyncThunk(
   "company/fetchCompany",
   async () => {
     try {
+      const token = getToken();
       const response = await axios.get(
-        `http://localhost:8081/companies?pageNumber=0&pageSize=25`
+        `http://localhost:8081/companies?pageNumber=0&pageSize=25`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       return response.data.items as Company[];
     } catch (error) {
@@ -19,9 +27,16 @@ export const addCompany = createAsyncThunk(
   "company/addCompany",
   async (companyName: string) => {
     try {
-      const response = await axios.post("http://localhost:8081/companies", {
-        companyName,
-      });
+      const token = getToken();
+      const response = await axios.post(
+        "http://localhost:8081/companies",
+        { companyName },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -33,9 +48,15 @@ export const updateCompany = createAsyncThunk(
   "company/updateCompany",
   async ({ id, companyName }: { id: number; companyName: string }) => {
     try {
+      const token = getToken();
       const response = await axios.put(
         `http://localhost:8081/companies/${id}`,
-        { companyName }
+        { companyName },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       return response.data;
     } catch (error) {
@@ -48,7 +69,12 @@ export const deleteCompany = createAsyncThunk(
   "company/deleteCompany",
   async (id: number) => {
     try {
-      await axios.delete(`http://localhost:8081/companies/${id}`);
+      const token = getToken();
+      await axios.delete(`http://localhost:8081/companies/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return id;
     } catch (error) {
       throw error;

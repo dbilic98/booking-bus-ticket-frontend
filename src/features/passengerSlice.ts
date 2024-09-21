@@ -3,12 +3,20 @@ import axios from "axios";
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../redux/store";
 
+const getToken = () => localStorage.getItem("token");
+
 export const fetchPassengerCategories = createAsyncThunk(
   "passenger-categories/fetchPassengerCategories",
   async () => {
     try {
+      const token = getToken();
       const response = await axios.get(
-        `http://localhost:8081/passenger-categories`
+        `http://localhost:8081/passenger-categories`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       return response.data.items as PassengerCategory[];
@@ -18,12 +26,13 @@ export const fetchPassengerCategories = createAsyncThunk(
   }
 );
 
-interface PassengerCategory {
+export interface PassengerCategory {
+  id: number;
   categoryName: string;
   discountPercentage: number;
 }
 
-interface SelectedPassenger {
+export interface SelectedPassenger {
   categoryName: string;
   discountPercentage: number;
   count: number;
@@ -93,7 +102,7 @@ export const formatPassengerSelection = (
 ): string[] => {
   return selectedPassengers.reduce((formattedList: string[], passenger) => {
     if (passenger.count > 0) {
-      formattedList.push(`${passenger.categoryName} ${passenger.count}`);
+      formattedList.push(`${passenger.categoryName} : ${passenger.count}`);
     }
     return formattedList;
   }, []);
@@ -106,6 +115,20 @@ export const calculateTotalPrice = (
   return selectedPassengers.reduce((total, passenger) => {
     return total + basePrice * passenger.discountPercentage * passenger.count;
   }, 0);
+};
+
+export const getPassengerCategoryIds = (
+  selectedPassengers: SelectedPassenger[],
+  categories: PassengerCategory[]
+): number[] => {
+  return selectedPassengers
+    .map((passenger) => {
+      const category = categories.find(
+        (cat) => cat.categoryName === passenger.categoryName
+      );
+      return category ? category.id : null;
+    })
+    .filter((id) => id !== null) as number[];
 };
 
 export const { updateSelectedPassengers } = passengerSlice.actions;

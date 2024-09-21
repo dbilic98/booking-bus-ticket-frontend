@@ -1,9 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const getToken = () => localStorage.getItem("token");
+
 export const fetchBus = createAsyncThunk("bus/fetchBus", async () => {
   try {
-    const response = await axios.get(`http://localhost:8081/buses`);
+    const token = getToken();
+    const response = await axios.get(`http://localhost:8081/buses`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data.items as Bus[];
   } catch (error) {
     throw error;
@@ -24,12 +31,21 @@ export const addBus = createAsyncThunk(
     companyId: number;
   }) => {
     try {
-      const response = await axios.post("http://localhost:8081/buses", {
-        model,
-        licensePlate,
-        seats,
-        companyId,
-      });
+      const token = getToken();
+      const response = await axios.post(
+        "http://localhost:8081/buses",
+        {
+          model,
+          licensePlate,
+          seats,
+          companyId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -51,10 +67,19 @@ export const updateBus = createAsyncThunk(
     companyId: number;
   }) => {
     try {
-      const response = await axios.put(`http://localhost:8081/buses/${id}`, {
-        model,
-        licensePlate,
-      });
+      const token = getToken();
+      const response = await axios.put(
+        `http://localhost:8081/buses/${id}`,
+        {
+          model,
+          licensePlate,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       throw error;
