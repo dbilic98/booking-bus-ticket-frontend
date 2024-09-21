@@ -21,7 +21,7 @@ const Buses: React.FC = () => {
   const [isAddBusVisible, setIsAddBusVisible] = useState(false);
   const [model, setModel] = useState("");
   const [licensePlate, setLicensePlate] = useState("");
-  const [seats, setSeats] = useState(64);
+  const [seats, setSeats] = useState(40);
   const [companyId, setCompanyId] = useState<number | null>(null);
   const [selectedBus, setSelectedBus] = useState<Bus | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -48,7 +48,7 @@ const Buses: React.FC = () => {
   const handleAddBus = async () => {
     try {
       if (companyId) {
-        const fixedSeats = 64;
+        const fixedSeats = 40;
         await dispatch(
           addBus({
             model,
@@ -241,8 +241,8 @@ const Buses: React.FC = () => {
                     value={seats}
                     onChange={(e) => {
                       const newSeats = Number(e.target.value);
-                      if (newSeats !== 64) {
-                        setSeats(64);
+                      if (newSeats !== 40) {
+                        setSeats(40);
                       }
                     }}
                     className="border rounded w-full py-2 px-3 text-gray-700"
