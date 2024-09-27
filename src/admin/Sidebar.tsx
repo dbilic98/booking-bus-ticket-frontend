@@ -1,4 +1,5 @@
 import React from "react";
+import LogOut from "../auth/Logout";
 
 const Sidebar: React.FC = () => {
   return (
@@ -42,8 +43,8 @@ const Sidebar: React.FC = () => {
       </nav>
 
       <div className="mt-auto pt-10">
-        <a href="/admin/logout" className="text-center text-base text-black">
-          Log out
+        <a href="/login" className="text-center text-base text-black">
+          <LogOut />
         </a>
       </div>
     </div>

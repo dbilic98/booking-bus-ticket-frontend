@@ -53,7 +53,7 @@ const Schedules: React.FC = () => {
   };
 
   const findBusName = (busId: number): string => {
-    const bus = buses.find((p) => p.id === busId);
+    const bus = buses.find((b) => b.id === busId);
     return bus ? bus.model : "";
   };
 
@@ -107,7 +107,7 @@ const Schedules: React.FC = () => {
   };
 
   const handleUpdateSubmit = async () => {
-    if (selectedSchedule && routeId) {
+    if (selectedSchedule && routeId && busId) {
       await dispatch(
         updateSchedule({
           id: selectedSchedule.id,
@@ -115,6 +115,7 @@ const Schedules: React.FC = () => {
           departureTime,
           arrivalTime,
           routeId,
+          busId,
         })
       );
       dispatch(fetchSchedule());
@@ -132,7 +133,7 @@ const Schedules: React.FC = () => {
     <div className="flex min-h-screen">
       <Sidebar />
       <div className="flex flex-col justify-between md:flex-row md:space-x-8">
-        <div className="bg-[#F7F8FA] p-4 mt-5 ml-10 sm:p-6 md:p-8 lg:p-10 shadow-lg rounded-md w-full md:w-[60vw] h-full">
+        <div className="bg-[#F7F8FA] p-4 ml-10 sm:p-6 md:p-8 lg:p-10 shadow-lg rounded-md w-full md:w-[60vw] h-full">
           <h2 className="text-xl font-bold mb-4">SCHEDULE</h2>
 
           <div className="overflow-x-auto rounded-2xl">
@@ -145,7 +146,7 @@ const Schedules: React.FC = () => {
               </button>
             </div>
 
-            <div className="bg-[#0C3D2E] text-white font-bold p-3 mb-2 rounded-t-md grid grid-cols-5 gap-5">
+            <div className="bg-[#0C3D2E] text-white font-bold p-3 mb-2 rounded-t-md grid grid-cols-6 gap-6">
               <div className="w-1/2">
                 <p className="text-sm">Schedule date</p>
               </div>
@@ -157,6 +158,9 @@ const Schedules: React.FC = () => {
               </div>
               <div className="w-1/2">
                 <p className="text-sm">Route</p>
+              </div>
+              <div className="w-1/2">
+                <p className="text-sm">Bus</p>
               </div>
               <div className="w-1/2 text-right mr-20">
                 <p className="text-sm">Action</p>
@@ -179,7 +183,7 @@ const Schedules: React.FC = () => {
                 return (
                   <div
                     key={scheduleItem.id}
-                    className="bg-white p-4 sm:p-6 shadow rounded-md grid grid-cols-5 gap-5 items-center"
+                    className="bg-white p-4 sm:p-6 shadow rounded-md grid grid-cols-6 gap-6 items-center"
                   >
                     <p className="text-base">
                       {scheduleItem.scheduleDate
@@ -192,6 +196,9 @@ const Schedules: React.FC = () => {
                       <span>{startPlaceName}</span>
                       <span>-</span>
                       <span>{endPlaceName}</span>
+                    </p>
+                    <p className="text-base">
+                      {findBusName(scheduleItem.busId)}
                     </p>
 
                     <div className="flex space-x-2">

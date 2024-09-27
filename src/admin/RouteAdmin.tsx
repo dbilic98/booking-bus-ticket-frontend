@@ -106,7 +106,7 @@ const RouteAdmin: React.FC = () => {
       {" "}
       <Sidebar />
       <div className="flex flex-col justify-between md:flex-row md:space-x-8">
-        <div className="bg-[#F7F8FA] p-4 mt-5 ml-10 sm:p-6 md:p-8 lg:p-10 shadow-lg rounded-md w-full md:w-[60vw] h-full">
+        <div className="bg-[#F7F8FA] p-4 ml-10 sm:p-6 md:p-8 lg:p-10 shadow-lg rounded-md w-full md:w-[60vw] h-full">
           <h2 className="text-xl font-bold mb-4">ROUTE</h2>
 
           <div className="overflow-x-auto rounded-2xl">
