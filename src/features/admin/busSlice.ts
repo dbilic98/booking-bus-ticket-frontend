@@ -119,7 +119,7 @@ const initialState: BusState = {
   error: null,
 };
 
-const CompanySlice = createSlice({
+const busSlice = createSlice({
   name: "bus",
   initialState,
   reducers: {},
@@ -157,4 +157,4 @@ const CompanySlice = createSlice({
   },
 });
 
-export default CompanySlice.reducer;
+export default busSlice.reducer;

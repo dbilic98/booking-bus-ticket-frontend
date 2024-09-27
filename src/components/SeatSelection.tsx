@@ -14,6 +14,7 @@ import { format, parseISO } from "date-fns";
 import { fetchAvailableSeats } from "../features/seatsSlice";
 import { AppDispatch } from "../redux/store";
 import { Seat } from "../features/seatsSlice";
+import { proceedToPayment } from "../features/payment/paymentSlice";
 
 const SeatSelection: React.FC = () => {
   const location = useLocation();
@@ -95,6 +96,19 @@ const SeatSelection: React.FC = () => {
   };
 
   const handleContinueClick = () => {
+    const orderData = selectedPassengers.map((passenger) => {
+      const price = selectedRoute
+        ? calculateTotalPrice([passenger], selectedRoute.basePrice)
+        : 0;
+      return {
+        productName: passenger.categoryName,
+        price,
+        quantity: passenger.count,
+      };
+    });
+
+    dispatch(proceedToPayment({ orderData }));
+
     localStorage.setItem("selectedSeats", JSON.stringify(selectedSeatIds));
     navigate("/create-checkout-session");
   };
@@ -296,7 +310,6 @@ const SeatSelection: React.FC = () => {
                     </React.Fragment>
                   ))}
                 </p>
-                <p>Selected Seats: {selectedSeatIds.join(", ")}</p>
                 <div className="bg-jet-black p-1 mt-4"></div>
                 <div className="flex justify-between items-center">
                   <p className="font-bold">PRICE:</p>

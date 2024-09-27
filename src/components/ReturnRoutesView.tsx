@@ -40,8 +40,6 @@ const ReturnRoutesView: React.FC = () => {
   const routes = useSelector(
     (state: RootState) => state.routes.routes
   ) as Route[];
-  const loading = useSelector((state: RootState) => state.routes.loading);
-  const error = useSelector((state: RootState) => state.routes.error);
 
   const filteredRoutes = routes.map((route) => ({
     ...route,
@@ -201,7 +199,7 @@ const ReturnRoutesView: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-cream p-10 rounded-md w-[20vw] h-full">
+          <div className="bg-cream p-10 rounded-md w-[89vw] md:w-[20vw] h-full">
             <h2 className="font-bold mb-4 text-xs">OUTBOUND</h2>
 
             {localSelectedReturnRoute && (
@@ -211,7 +209,7 @@ const ReturnRoutesView: React.FC = () => {
                     € {localSelectedReturnRoute.basePrice}.00
                   </p>
                   <button
-                    className="flex ml-14 bg-jet-black text-white px-5 py-2 rounded-full"
+                    className="bg-jet-black text-white px-5 py-2 rounded-full ml-10"
                     onClick={handleContinue}
                   >
                     CONTINUE

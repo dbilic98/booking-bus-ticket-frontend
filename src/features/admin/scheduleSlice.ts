@@ -70,12 +70,14 @@ export const updateSchedule = createAsyncThunk(
     departureTime,
     arrivalTime,
     routeId,
+    busId,
   }: {
     id: number;
     scheduleDate: Date;
     departureTime: string;
     arrivalTime: string;
     routeId: number;
+    busId: number;
   }) => {
     try {
       const token = getToken();
@@ -86,6 +88,7 @@ export const updateSchedule = createAsyncThunk(
           departureTime,
           arrivalTime,
           routeId,
+          busId,
         },
         {
           headers: {
@@ -109,8 +112,7 @@ export const deleteSchedule = createAsyncThunk(
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
-    );
+      });
       return id;
     } catch (error) {
       throw error;
