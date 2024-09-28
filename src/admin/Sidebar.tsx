@@ -40,6 +40,12 @@ const Sidebar: React.FC = () => {
         >
           Schedule
         </a>
+        <a
+          href="/admin/reservation"
+          className="text-lg font-medium text-[#333333] hover:bg-[#0C3D2E] hover:text-white focus:bg-[#0C3D2E] focus:text-white py-3 px-16 rounded-xl"
+        >
+          Reservation
+        </a>
       </nav>
 
       <div className="mt-auto pt-10">
