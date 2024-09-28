@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import { loginUser } from "../features/auth/authSlice";
+import { jwtDecode } from "jwt-decode";
 
 const LogIn: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -39,7 +40,17 @@ const LogIn: React.FC = () => {
         const result = loginUser.fulfilled.match(resultAction);
 
         if (result) {
-          navigate("/home");
+          const token = resultAction.payload.accessToken;
+          const decodedToken: any = jwtDecode(token);
+
+          const roles =
+            decodedToken.resource_access["spring-boot-client"].roles;
+
+          if (roles.includes("ADMIN") || roles.includes("COMPANY")) {
+            navigate("/admin");
+          } else if (roles.includes("CLIENT")) {
+            navigate("/home");
+          }
         } else {
           setErrors({ general: "Login failed" });
         }
@@ -48,6 +59,7 @@ const LogIn: React.FC = () => {
       }
     }
   };
+
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center">
       <div className="grid grid-cols-1 md:grid-cols-2 bg-white shadow-lg rounded-lg overflow-hidden">
