@@ -79,7 +79,7 @@ const Companies: React.FC = () => {
               </button>
             </div>
 
-            <div className="flex justify-between bg-[#0C3D2E] text-white font-bold p-3 mb-2 rounded-t-md">
+            <div className="bg-[#0C3D2E] text-white font-bold p-3 mb-2 rounded-t-md flex justify-between">
               <div className="w-1/2">
                 <p className="text-sm">Company Name</p>
               </div>

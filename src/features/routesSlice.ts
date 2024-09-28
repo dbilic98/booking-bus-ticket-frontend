@@ -19,10 +19,8 @@ export const fetchRoutes = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data);
-      var a = response.data as SearchParams[];
-      console.log(a);
-      return a;
+      response.data as SearchParams[];
+      return response.data;
     } catch (error) {
       throw error;
     }

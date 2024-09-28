@@ -183,7 +183,7 @@ const Schedules: React.FC = () => {
                 return (
                   <div
                     key={scheduleItem.id}
-                    className="bg-white p-4 sm:p-6 shadow rounded-md grid grid-cols-6 gap-6 items-center"
+                    className="bg-white p-4 sm:p-6 shadow rounded-md grid grid-cols-6 gap-2 items-center"
                   >
                     <p className="text-base">
                       {scheduleItem.scheduleDate

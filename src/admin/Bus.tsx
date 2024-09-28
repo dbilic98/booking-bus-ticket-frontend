@@ -126,7 +126,7 @@ const Buses: React.FC = () => {
               <div className="w-1/2">
                 <p className="text-sm">License plate</p>
               </div>
-              <div className="">
+              <div className="w-1/2">
                 <p className="text-sm">Company</p>
               </div>
               <div className="w-1/2 text-right mr-20">
@@ -138,7 +138,7 @@ const Buses: React.FC = () => {
               {buses.map((busItem) => (
                 <div
                   key={busItem.id}
-                  className="bg-white p-4 sm:p-6 shadow rounded-md grid grid-cols-4 gap-4 items-center"
+                  className="bg-white p-4 sm:p-6 shadow rounded-md grid grid-cols-4 gap-12 items-center"
                 >
                   <p className="text-base">{busItem.model}</p>
                   <p className="text-base">{busItem.licensePlate}</p>

@@ -119,7 +119,7 @@ const RouteAdmin: React.FC = () => {
               </button>
             </div>
 
-            <div className="bg-[#0C3D2E] text-white font-bold p-3 mb-2 rounded-t-md grid grid-cols-5 gap-4">
+            <div className="bg-[#0C3D2E] text-white font-bold p-3 mb-2 rounded-t-md grid grid-cols-5 gap-5">
               <div className="w-1/2">
                 <p className="text-sm">Base price</p>
               </div>
@@ -141,7 +141,7 @@ const RouteAdmin: React.FC = () => {
               {route.map((routeItem) => (
                 <div
                   key={routeItem.id}
-                  className="bg-white p-4 sm:p-6 shadow rounded-md grid grid-cols-5 gap-4 items-center"
+                  className="bg-white p-4 sm:p-6 shadow rounded-md grid grid-cols-5 gap-5 items-center"
                 >
                   <p className="text-base">{routeItem.basePrice} KM</p>
                   <p className="text-base">{routeItem.totalDistance} km</p>
