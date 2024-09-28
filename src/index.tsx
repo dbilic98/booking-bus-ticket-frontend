@@ -21,6 +21,7 @@ import ProceedToPayment from "./payment/ProceedToPayment";
 import SuccessPage from "./payment/SuccessPage";
 import FailurePage from "./payment/FailurePage";
 import About from "./components/About";
+import Reservations from "./admin/Reservation";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -39,6 +40,7 @@ root.render(
         <Route path="/admin/bus" element={<Buses />} />
         <Route path="/admin/route" element={<RouteAdmin />} />
         <Route path="/admin/schedule" element={<Schedule />} />
+        <Route path="/admin/reservation" element={<Reservations />} />
         <Route path="/registration" element={<Registrations />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/logout" element={<LogOut />} />
