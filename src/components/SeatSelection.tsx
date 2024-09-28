@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import { CgArrowLongDownC } from "react-icons/cg";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -14,7 +14,6 @@ import { format, parseISO } from "date-fns";
 import { fetchAvailableSeats } from "../features/seatsSlice";
 import { AppDispatch } from "../redux/store";
 import { Seat } from "../features/seatsSlice";
-import { proceedToPayment } from "../features/payment/paymentSlice";
 
 const SeatSelection: React.FC = () => {
   const location = useLocation();
@@ -69,7 +68,7 @@ const SeatSelection: React.FC = () => {
     0
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedRoute?.id && selectedRoute.scheduleId) {
       dispatch(
         fetchAvailableSeats({
@@ -96,19 +95,6 @@ const SeatSelection: React.FC = () => {
   };
 
   const handleContinueClick = () => {
-    const orderData = selectedPassengers.map((passenger) => {
-      const price = selectedRoute
-        ? calculateTotalPrice([passenger], selectedRoute.basePrice)
-        : 0;
-      return {
-        productName: passenger.categoryName,
-        price,
-        quantity: passenger.count,
-      };
-    });
-
-    dispatch(proceedToPayment({ orderData }));
-
     localStorage.setItem("selectedSeats", JSON.stringify(selectedSeatIds));
     navigate("/create-checkout-session");
   };
@@ -152,7 +138,6 @@ const SeatSelection: React.FC = () => {
             <div className="mt-20 border-2 p-6 border-gray-200">
               <div className="p-4">
                 <div className="grid grid-cols-10 gap-4">
-                  {/* First row of seats */}
                   {row1.map((number) => {
                     const seat = seats.find(
                       (s: Seat) => s.seatNumber === number
@@ -160,7 +145,6 @@ const SeatSelection: React.FC = () => {
                     const isFree = seat ? seat.free : false;
                     const isSelected =
                       seat && selectedSeatIds.includes(seat.id);
-
                     return (
                       <div
                         key={number}
@@ -179,7 +163,6 @@ const SeatSelection: React.FC = () => {
                     );
                   })}
 
-                  {/* Second row of seats */}
                   {row2.map((number) => {
                     const seat = seats.find(
                       (s: Seat) => s.seatNumber === number
@@ -187,7 +170,6 @@ const SeatSelection: React.FC = () => {
                     const isFree = seat ? seat.free : false;
                     const isSelected =
                       seat && selectedSeatIds.includes(seat.id);
-
                     return (
                       <div
                         key={number}
@@ -206,10 +188,8 @@ const SeatSelection: React.FC = () => {
                     );
                   })}
 
-                  {/* Separator */}
                   <div className="col-span-10 h-10 bg-gray-300"></div>
 
-                  {/* Third row of seats */}
                   {row3.map((number) => {
                     const seat = seats.find(
                       (s: Seat) => s.seatNumber === number
@@ -235,7 +215,6 @@ const SeatSelection: React.FC = () => {
                     );
                   })}
 
-                  {/* Fourth row of seats */}
                   {row4.map((number) => {
                     const seat = seats.find(
                       (s: Seat) => s.seatNumber === number
@@ -243,7 +222,6 @@ const SeatSelection: React.FC = () => {
                     const isFree = seat ? seat.free : false;
                     const isSelected =
                       seat && selectedSeatIds.includes(seat.id);
-
                     return (
                       <div
                         key={number}
