@@ -90,12 +90,8 @@ export const updateBus = createAsyncThunk(
 export const deleteBus = createAsyncThunk(
   "bus/deleteBus",
   async (id: number) => {
-    try {
-      await axios.delete(`http://localhost:8081/buses/${id}`);
-      return id;
-    } catch (error) {
-      throw error;
-    }
+    await axios.delete(`http://localhost:8081/buses/${id}`);
+    return id;
   }
 );
 
@@ -153,6 +149,10 @@ const busSlice = createSlice({
       .addCase(deleteBus.fulfilled, (state, action) => {
         const id = action.payload;
         state.bus = state.bus.filter((bus) => bus.id !== id);
+        state.error = null;
+      })
+      .addCase(deleteBus.rejected, (state, action) => {
+        state.error = action.error.message || "Failed to delete bus";
       });
   },
 });

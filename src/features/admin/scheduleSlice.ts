@@ -106,17 +106,13 @@ export const updateSchedule = createAsyncThunk(
 export const deleteSchedule = createAsyncThunk(
   "schedule/deleteSchedule",
   async (id: number) => {
-    try {
-      const token = getToken();
-      await axios.delete(`http://localhost:8081/schedules/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return id;
-    } catch (error) {
-      throw error;
-    }
+    const token = getToken();
+    await axios.delete(`http://localhost:8081/schedules/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return id;
   }
 );
 
@@ -175,6 +171,10 @@ const scheduleSlice = createSlice({
       .addCase(deleteSchedule.fulfilled, (state, action) => {
         const id = action.payload;
         state.schedule = state.schedule.filter((sched) => sched.id !== id);
+        state.error = null;
+      })
+      .addCase(deleteSchedule.rejected, (state, action) => {
+        state.error = action.error.message || "Failed to delete schedule";
       });
   },
 });

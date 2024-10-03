@@ -97,17 +97,13 @@ export const updateRoute = createAsyncThunk(
 export const deleteRoute = createAsyncThunk(
   "route/deleteRoute",
   async (id: number) => {
-    try {
-      const token = getToken();
-      await axios.delete(`http://localhost:8081/routes/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return id;
-    } catch (error) {
-      throw error;
-    }
+    const token = getToken();
+    await axios.delete(`http://localhost:8081/routes/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return id;
   }
 );
 
@@ -165,6 +161,10 @@ const routeAdminSlice = createSlice({
       .addCase(deleteRoute.fulfilled, (state, action) => {
         const id = action.payload;
         state.route = state.route.filter((route) => route.id !== id);
+        state.error = null;
+      })
+      .addCase(deleteRoute.rejected, (state, action) => {
+        state.error = action.error.message || "Failed to delete route";
       });
   },
 });
