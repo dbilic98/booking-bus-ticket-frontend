@@ -25,6 +25,7 @@ const RouteAdmin: React.FC = () => {
   const [endPlaceId, setEndPlaceId] = useState<number | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState<Route | null>(null);
+  const error = useSelector((state: RootState) => state.route.error);
 
   useEffect(() => {
     dispatch(fetchRoute());
@@ -108,6 +109,19 @@ const RouteAdmin: React.FC = () => {
       <div className="flex flex-col justify-between md:flex-row md:space-x-8">
         <div className="bg-[#F7F8FA] p-4 ml-10 sm:p-6 md:p-8 lg:p-10 shadow-lg rounded-md w-full md:w-[60vw] h-full">
           <h2 className="text-xl font-bold mb-4">ROUTE</h2>
+
+          {error && (
+            <div
+              className="bg-red-100 border px-4 py-3 rounded relative"
+              role="alert"
+            >
+              <strong className="font-bold">
+                You cannot delete this record because it is linked to other
+                records in the system.
+              </strong>
+              <span className="block sm:inline"></span>
+            </div>
+          )}
 
           <div className="overflow-x-auto rounded-2xl">
             <div className="flex justify-end mb-10 mr-4 ">
@@ -277,7 +291,7 @@ const RouteAdmin: React.FC = () => {
 
               <div>
                 <button
-                  className=" w-full mt-10 bg-[#0C3D2E] text-white px-5 py-2 rounded-md"
+                  className="w-full mt-10 bg-[#0C3D2E] text-white px-5 py-2 rounded-md"
                   onClick={handleAddRoute}
                 >
                   CONTINUE

@@ -39,6 +39,7 @@ const Schedules: React.FC = () => {
     null
   );
   const [isEditing, setIsEditing] = useState(false);
+  const error = useSelector((state: RootState) => state.schedule.error);
 
   useEffect(() => {
     dispatch(fetchSchedule());
@@ -135,6 +136,19 @@ const Schedules: React.FC = () => {
       <div className="flex flex-col justify-between md:flex-row md:space-x-8">
         <div className="bg-[#F7F8FA] p-4 ml-10 sm:p-6 md:p-8 lg:p-10 shadow-lg rounded-md w-full md:w-[60vw] h-full">
           <h2 className="text-xl font-bold mb-4">SCHEDULE</h2>
+
+          {error && (
+            <div
+              className="bg-red-100 border px-4 py-3 rounded relative"
+              role="alert"
+            >
+              <strong className="font-bold">
+                You cannot delete this record because it is linked to other
+                records in the system.
+              </strong>
+              <span className="block sm:inline"></span>
+            </div>
+          )}
 
           <div className="overflow-x-auto rounded-2xl">
             <div className="flex justify-end mb-10 mr-4 ">
@@ -269,7 +283,7 @@ const Schedules: React.FC = () => {
         </div>
 
         {isAddScheduleVisible && (
-          <div className="bg-[#F7F8FA] p-10 mt-10 rounded-md w-[20vw] h-[67vh]">
+          <div className="bg-[#F7F8FA] p-10 mt-10 rounded-md w-[20vw] h-[76vh]">
             <h2 className="font-bold mb-4 text-sm">ADD SCHEDULE</h2>
             <div>
               <div className="flex items-center mb-2"></div>
@@ -356,7 +370,7 @@ const Schedules: React.FC = () => {
               </div>
               <div>
                 <button
-                  className=" w-full mt-10 bg-[#0C3D2E] text-white px-5 py-2 rounded-md"
+                  className="w-full mt-10 bg-[#0C3D2E] text-white px-5 py-2 rounded-md"
                   onClick={handleAddSchedule}
                 >
                   CONTINUE
