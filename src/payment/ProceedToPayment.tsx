@@ -51,7 +51,10 @@ const ProceedToPayment: React.FC = () => {
         const discount = category?.discountPercentage ?? 1;
 
         const price = selectedRoute?.basePrice
-          ? selectedRoute.basePrice * discount
+          ? selectedRoute.basePrice * discount +
+            (selectedReturnRoute?.basePrice
+              ? selectedReturnRoute.basePrice * discount
+              : 0)
           : 0;
 
         return {
