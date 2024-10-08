@@ -68,13 +68,17 @@ export const updateCompany = createAsyncThunk(
 export const deleteCompany = createAsyncThunk(
   "company/deleteCompany",
   async (id: number) => {
-    const token = getToken();
-    await axios.delete(`http://localhost:8081/companies/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return id;
+    try {
+      const token = getToken();
+      await axios.delete(`http://localhost:8081/companies/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return id;
+    } catch (error) {
+      throw error;
+    }
   }
 );
 
@@ -126,15 +130,11 @@ const CompanySlice = createSlice({
       );
     });
 
-    builder
-      .addCase(deleteCompany.fulfilled, (state, action) => {
-        const id = action.payload;
-        state.company = state.company.filter((comp) => comp.id !== id);
-        state.error = null;
-      })
-      .addCase(deleteCompany.rejected, (state, action) => {
-        state.error = action.error.message || "Failed to delete company";
-      });
+    builder.addCase(deleteCompany.fulfilled, (state, action) => {
+      const id = action.payload;
+      state.company = state.company.filter((comp) => comp.id !== id);
+      state.error = null;
+    });
   },
 });
 

@@ -98,9 +98,9 @@ const TicketList: React.FC<TicketListProps> = ({ tickets, onClose }) => {
             const endPlaceName =
               places[oneWayRoute?.endPlaceId]?.placeName || "";
             const returnStartPlaceName =
-              places[returnRoute?.startPlaceId]?.placeName || "";
-            const returnEndPlaceName =
               places[returnRoute?.endPlaceId]?.placeName || "";
+            const returnEndPlaceName =
+              places[returnRoute?.startPlaceId]?.placeName || "";
 
             const oneWaySeat = seats.find(
               (seat) => seat.id === ticket.oneWaySeatId
@@ -144,7 +144,9 @@ const TicketList: React.FC<TicketListProps> = ({ tickets, onClose }) => {
           })}
         </div>
         <div className="mt-4">
-          <h3 className="text-lg font-bold">Total Price: {totalPrice}€</h3>
+          <h3 className="text-lg font-bold">
+            Total Price: {totalPrice.toFixed(2)}€
+          </h3>
         </div>
 
         <div className="flex justify-center mt-4">
