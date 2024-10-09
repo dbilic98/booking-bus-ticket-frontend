@@ -122,7 +122,7 @@ const TicketList: React.FC<TicketListProps> = ({ tickets, onClose }) => {
                   Return route: {returnEndPlaceName} / {returnStartPlaceName}
                 </p>
                 <p>
-                  One Way schedule:{" "}
+                  One way schedule:{" "}
                   {oneWaySchedule
                     ? `${oneWaySchedule.departureTime} - ${oneWaySchedule.arrivalTime}`
                     : "/"}
